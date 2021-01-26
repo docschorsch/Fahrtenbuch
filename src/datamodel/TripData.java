@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class TripData {
     private DateTimeFormatter formatter;
 
     private TripData() {
-        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-hh-mm");
+//        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm");
     }
 
     public static TripData getInstance() {
@@ -47,19 +48,19 @@ public class TripData {
         BufferedReader br = Files.newBufferedReader(path);
 
         String input;
-
         try {
             while ((input=br.readLine()) != null) {
                 String[] tripParameters = input.split("\t");
                 String startLocation = tripParameters[0];
                 String endLocation = tripParameters[1];
                 String distanceString = tripParameters[2];
-                String dateStringTripBegin = tripParameters[3];
-                String dateStringTripEnd = tripParameters[4];
-                LocalDateTime dateTripBegin = LocalDateTime.parse(dateStringTripBegin);
-                LocalDateTime dateTripEnd = LocalDateTime.parse(dateStringTripEnd);
+
+                String dateTimeStringTripBegin = tripParameters[3];
+                String dateTimeStringTripEnd = tripParameters[4];
+                LocalDateTime dateTimeTripBegin = LocalDateTime.parse(dateTimeStringTripBegin);
+                LocalDateTime dateTimeTripEnd = LocalDateTime.parse(dateTimeStringTripEnd);
                 int distance = Integer.parseInt(distanceString);
-                Trip trip = new Trip(startLocation,endLocation,distance,dateTripBegin,dateTripEnd);
+                Trip trip = new Trip(startLocation,endLocation,distance,dateTimeTripBegin,dateTimeTripEnd);
                 trips.add(trip);
             }
         } finally {
@@ -67,7 +68,6 @@ public class TripData {
                 br.close();
             }
         }
-
     }
 
     public void storeTripData() throws IOException {

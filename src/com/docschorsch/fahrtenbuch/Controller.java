@@ -5,7 +5,11 @@ import datamodel.TripData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+//import javafx.scene.control.*;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
 import java.time.LocalDate;
@@ -23,6 +27,7 @@ public class Controller {
     private TextField endLocationArea;
     @FXML
     private TextField distanceArea;
+
     @FXML
     private TextField tripBeginHour;
     @FXML
@@ -83,17 +88,18 @@ public class Controller {
         LocalDateTime tripEndDateTime;
 
         //set default of Hour, Min Textfields to 00
-        tripBeginHour.setText("00");
-        tripBeginMinute.setText("00");
-        tripEndHour.setText("00");
-        tripEndMinute.setText("00");
+//        tripBeginHour.setText("00");
+//        tripBeginMinute.setText("00");
+//        tripEndHour.setText("00");
+//        tripEndMinute.setText("00");
 
-        LocalTime tripBeginTime ;
-        LocalTime tripEndTime ;
+        LocalTime tripBeginTime;
+        LocalTime tripEndTime;
 
         // datePicker must not be null/default
-        if(tripBeginDatePicker.getValue()!=null && tripEndDatePicker.getValue()!=null) {
+        if (tripBeginDatePicker.getValue()!=null && tripEndDatePicker.getValue()!=null) {
             tripBeginTime = LocalTime.parse(tripBeginHour.getText() + ":" + tripBeginMinute.getText());
+            System.out.println(tripBeginTime);
             tripBeginDateTime = LocalDateTime.of(tripBeginDatePicker.getValue(), tripBeginTime);
             tripEndTime = LocalTime.parse(tripEndHour.getText() + ":" + tripEndMinute.getText());
             tripEndDateTime = LocalDateTime.of(tripEndDatePicker.getValue(), tripEndTime);
