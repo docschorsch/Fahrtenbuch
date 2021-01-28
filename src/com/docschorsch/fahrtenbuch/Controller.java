@@ -5,7 +5,6 @@ import datamodel.TripData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-//import javafx.scene.control.*;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -36,7 +35,6 @@ public class Controller {
     private TextField tripEndHour;
     @FXML
     private TextField tripEndMinute;
-
 
     @FXML
     private DatePicker tripBeginDatePicker;
@@ -98,10 +96,9 @@ public class Controller {
 
         // datePicker must not be null/default
         if (tripBeginDatePicker.getValue()!=null && tripEndDatePicker.getValue()!=null) {
-            tripBeginTime = LocalTime.parse(tripBeginHour.getText() + ":" + tripBeginMinute.getText());
-            System.out.println(tripBeginTime);
+            tripBeginTime = LocalTime.parse(returnValidatedTimeEntry(tripBeginHour) + ":" + returnValidatedTimeEntry(tripBeginMinute));
             tripBeginDateTime = LocalDateTime.of(tripBeginDatePicker.getValue(), tripBeginTime);
-            tripEndTime = LocalTime.parse(tripEndHour.getText() + ":" + tripEndMinute.getText());
+            tripEndTime = LocalTime.parse(returnValidatedTimeEntry(tripEndHour) + ":" + returnValidatedTimeEntry(tripEndMinute));
             tripEndDateTime = LocalDateTime.of(tripEndDatePicker.getValue(), tripEndTime);
 
         } else {
@@ -117,4 +114,22 @@ public class Controller {
         }
     }
 
+
+    public String returnValidatedTimeEntry(TextField textField) {
+        String s;
+        // test for one digit number, add leading 0
+        if(textField.getText().matches("\\d")) {
+            s = "0" + textField.getText();
+        }
+        // test for Strings containing values other than 0-9, more than 2 digits or values >23 hours / >59 minutes respectively
+        else if( (!textField.getText().matches("\\d*")) || (textField.getText().length()>2) ||
+                ((textField.getId().contains("Hour") && Integer.parseInt(textField.getText()) >23 )) ||
+                ((textField.getId().contains("Minute") && Integer.parseInt(textField.getText()) >59 )) ){
+            s = "00";
+        }
+        else {
+            s = textField.getText();
+        }
+        return s;
+    }
 }

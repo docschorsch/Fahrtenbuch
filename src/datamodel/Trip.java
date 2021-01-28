@@ -1,6 +1,8 @@
 package datamodel;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class Trip {
     private String startLocation;
@@ -59,6 +61,6 @@ public class Trip {
     }
     @Override
     public String toString() {
-        return startLocation + " --> " + endLocation + " at " + tripBegin;
+        return startLocation + " --> " + endLocation + " at " + tripBegin.format(DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
     }
 }

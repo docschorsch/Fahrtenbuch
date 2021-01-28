@@ -23,7 +23,7 @@ public class TripData {
     private DateTimeFormatter formatter;
 
     private TripData() {
-//        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm");
+        formatter = DateTimeFormatter.ofPattern("d MMM uuuu : HH mm");
     }
 
     public static TripData getInstance() {
@@ -57,8 +57,8 @@ public class TripData {
 
                 String dateTimeStringTripBegin = tripParameters[3];
                 String dateTimeStringTripEnd = tripParameters[4];
-                LocalDateTime dateTimeTripBegin = LocalDateTime.parse(dateTimeStringTripBegin);
-                LocalDateTime dateTimeTripEnd = LocalDateTime.parse(dateTimeStringTripEnd);
+                LocalDateTime dateTimeTripBegin = LocalDateTime.parse(dateTimeStringTripBegin, DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
+                LocalDateTime dateTimeTripEnd = LocalDateTime.parse(dateTimeStringTripEnd, DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
                 int distance = Integer.parseInt(distanceString);
                 Trip trip = new Trip(startLocation,endLocation,distance,dateTimeTripBegin,dateTimeTripEnd);
                 trips.add(trip);
@@ -79,7 +79,7 @@ public class TripData {
             while (iterator.hasNext()) {
                 Trip trip = iterator.next();
                 bw.write(String.format("%s\t%s\t%s\t%s\t%s\t",trip.getStartLocation(),trip.getEndLocation(),
-                    trip.getDistance(),trip.getTripBegin(),trip.getTripEnd()));
+                    trip.getDistance(),trip.getTripBegin().format(formatter),trip.getTripEnd().format(formatter)));
                 bw.newLine();
             }
         } finally {

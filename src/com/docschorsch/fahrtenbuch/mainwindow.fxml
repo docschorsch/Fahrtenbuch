@@ -31,7 +31,7 @@
                 <DatePicker fx:id="tripBeginDatePicker" />
                 <VBox  minWidth="30" prefWidth="30" maxWidth="30">
                     <Label text="Hour"/>
-                    <TextField fx:id="tripBeginHour" promptText="00" >
+                    <TextField fx:id="tripBeginHour" promptText="00"  >
                     </TextField>
                 </VBox>
                 <VBox  minWidth="30" prefWidth="30" maxWidth="30">
