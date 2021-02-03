@@ -1,6 +1,7 @@
 package datamodel;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,7 +20,7 @@ public class TripData {
     private static TripData instance = new TripData();
     private static String filename = "TripsDataFile.txt";
 
-    private List<Trip> trips;
+    private ObservableList<Trip> trips;
     private DateTimeFormatter formatter;
 
     private TripData() {
@@ -34,7 +35,7 @@ public class TripData {
         return filename;
     }
 
-    public List<Trip> getTrips() {
+    public ObservableList<Trip> getTrips() {
         return trips;
     }
 
@@ -87,6 +88,9 @@ public class TripData {
                 bw.close();
             }
         }
+    }
+    public void deleteTripItem(Trip trip) {
+        trips.remove(trip);
     }
 
 }

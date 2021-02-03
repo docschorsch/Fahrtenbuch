@@ -11,24 +11,38 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.MenuItem?>
 <BorderPane fx:id="mainBorderPane" fx:controller="com.docschorsch.fahrtenbuch.Controller"
             xmlns:fx="http://javafx.com/fxml" >
     <top>
         <MenuBar>
             <Menu text="File">
                 <items>
+                    <MenuItem text="Exit" onAction="#handleExit"/>
                 </items>
             </Menu>
         </MenuBar>
     </top>
     <center>
         <VBox>
-            <HBox spacing="20">
-                <TextField fx:id="startLocationArea"  />
-                <TextField fx:id="endLocationArea"  />
-                <TextField fx:id="distanceArea"  />
+            <HBox spacing="20" style="-fx-padding:10 10 10 10">
+                <VBox>
+                    <Label text="Start Location" />
+                    <TextField fx:id="startLocationField"  />
+                </VBox>
+                <VBox>
+                    <Label text="End Location" />
+                    <TextField fx:id="endLocationField"  />
+                </VBox>
+                <VBox>
+                    <Label text="Distance (km)" />
+                    <TextField fx:id="distanceField"  />
+                </VBox>
+                <VBox>
+                    <Label text="Trip Start Date" />
+                    <DatePicker fx:id="tripBeginDatePicker" />
+                </VBox>
 
-                <DatePicker fx:id="tripBeginDatePicker" />
                 <VBox  minWidth="30" prefWidth="30" maxWidth="30">
                     <Label text="Hour"/>
                     <TextField fx:id="tripBeginHour" promptText="00"  >
@@ -39,8 +53,11 @@
                     <TextField fx:id="tripBeginMinute" promptText="00" >
                     </TextField>
                 </VBox>
+                <VBox>
+                    <Label text="Trip End Date" />
+                    <DatePicker fx:id="tripEndDatePicker" />
+                </VBox>
 
-                <DatePicker fx:id="tripEndDatePicker" />
                 <VBox  minWidth="30" prefWidth="30" maxWidth="30">
                     <Label text="Hour"/>
                     <TextField fx:id="tripEndHour" promptText="00" >
@@ -51,11 +68,13 @@
                     <TextField fx:id="tripEndMinute" promptText="00" >
                     </TextField>
                 </VBox>
+                <VBox spacing="10">
+                    <Button text="Clear all..." minWidth="100.0" prefWidth="100" maxWidth="100" onMouseClicked="#resetUserEntry"/>
+                    <Button text="Save..." minWidth="100.0" prefWidth="100" maxWidth="100" onMouseClicked="#addTrip"/>
+                </VBox>
 
-                <Button text="Clear all..." minWidth="100.0" prefWidth="100" maxWidth="100"/>
-                <Button text="Save..." minWidth="100.0" prefWidth="100" maxWidth="100" onMouseClicked="#addTrip"/>
             </HBox>
-            <ListView fx:id="tripListView" GridPane.columnIndex="0" GridPane.rowIndex="2" >
+            <ListView fx:id="tripListView" GridPane.columnIndex="0" GridPane.rowIndex="2" onKeyPressed="#handleKeyPressed" >
             </ListView>
         </VBox>
 
