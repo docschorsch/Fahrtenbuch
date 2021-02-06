@@ -50,6 +50,9 @@ public class Controller {
     private DatePicker tripEndDatePicker;
     @FXML
     private ContextMenu listContextMenu;
+    @FXML
+    private Button saveEdits;
+
 
     private SortedList<Trip> tripSortedList;
 
@@ -70,6 +73,8 @@ public class Controller {
 
 //        trips.add(trip2);
 //        trips.add(trip3);
+
+        saveEdits.setOnAction(event -> addTrip(2));
 
         listContextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem("Delete");
@@ -141,7 +146,13 @@ public class Controller {
         });
     }
 
+    // overloaded add method to cater for default addTrip() called in fxml
     public void addTrip() {
+        addTrip(1);
+    }
+
+    public void addTrip(int addOrEdit) {
+
         String newStartLocation = startLocationField.getText();
         String newEndLocation = endLocationField.getText();
         int newDistance = Integer.parseInt(distanceField.getText().isEmpty() ? "99" : distanceField.getText());
@@ -183,10 +194,15 @@ public class Controller {
         Trip trip = new Trip(newStartLocation,newEndLocation,newDistance,tripBeginDateTime,tripEndDateTime);
         if((newStartLocation == null) || (newEndLocation == null) || (newDistance == 0) ) {
             System.out.println("Error - trying to add empty or 0 field!");
+            // edit if "save edit" was pressed
+        } else if (addOrEdit == 2) {
+            Trip selectedTrip = tripListView.getSelectionModel().getSelectedItem();
+            TripData.getInstance().editTrip(selectedTrip, trip);
         } else {
             TripData.getInstance().addTrip(trip);
-            tripListView.setItems(tripSortedList);
         }
+        tripListView.setItems(tripSortedList);
+        tripListView.getSelectionModel().select(trip);
     }
 
 

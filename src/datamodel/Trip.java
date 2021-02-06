@@ -61,6 +61,6 @@ public class Trip {
     }
     @Override
     public String toString() {
-        return startLocation + " --> " + endLocation + " at " + tripBegin.format(DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
+        return startLocation + " --> " + endLocation + " at " + tripBegin.format(DateTimeFormatter.ofPattern("d MMM uuuu : HH mm")) + " to " + tripEnd.format(DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
     }
 }

@@ -43,6 +43,16 @@ public class TripData {
         trips.add(trip);
     }
 
+    public void editTrip(Trip oldTrip, Trip newTrip) {
+        if(oldTrip != null && newTrip != null) {
+            for(Trip trip : trips) {
+                if(trip == oldTrip) {
+                    trips.set(trips.indexOf(oldTrip), newTrip);
+                }
+            }
+        }
+    }
+
     public void loadTripData() throws IOException {
         trips = FXCollections.observableArrayList();
         Path path = Paths.get(filename);

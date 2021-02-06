@@ -68,9 +68,10 @@
                     <TextField fx:id="tripEndMinute" promptText="00" >
                     </TextField>
                 </VBox>
-                <VBox spacing="10">
+                <VBox spacing="5">
                     <Button text="Clear all..." minWidth="100.0" prefWidth="100" maxWidth="100" onMouseClicked="#resetUserEntry"/>
                     <Button text="Save..." minWidth="100.0" prefWidth="100" maxWidth="100" onMouseClicked="#addTrip"/>
+                    <Button fx:id="saveEdits" text="Save edits..." minWidth="100.0" prefWidth="100" maxWidth="100" />
                 </VBox>
 
             </HBox>
