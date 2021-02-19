@@ -90,7 +90,7 @@ public class TripData {
             while (iterator.hasNext()) {
                 Trip trip = iterator.next();
                 bw.write(String.format("%s\t%s\t%s\t%s\t%s\t",trip.getStartLocation(),trip.getEndLocation(),
-                    trip.getDistance(),trip.getTripBegin().format(formatter),trip.getTripEnd().format(formatter)));
+                    trip.getDistance(),trip.getTripBegin().getLocalDateTime().format(formatter),trip.getTripEnd().getLocalDateTime().format(formatter)));
                 bw.newLine();
             }
         } finally {

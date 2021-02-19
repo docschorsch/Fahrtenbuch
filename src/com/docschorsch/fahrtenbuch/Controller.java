@@ -11,10 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +29,9 @@ public class Controller {
 //    public static ArrayList<Trip> trips = new ArrayList<Trip>();
     @FXML
     private ListView<Trip> tripListView;
+
+    @FXML
+    private TableView<Trip> tripTableView;
 
     @FXML
     private TextField startLocationField;
@@ -53,6 +58,8 @@ public class Controller {
     @FXML
     private Button saveEdits;
 
+    @FXML
+    private TableColumn tripBeginColumn;
 
     private SortedList<Trip> tripSortedList;
 
@@ -63,6 +70,7 @@ public class Controller {
     public void initialize() {
 
 //        Trip trip = new Trip("muc", "ber", 600, LocalDateTime.now(),LocalDateTime.now());
+//        System.out.println(trip.getTripBeginTest());
 //        Trip trip2 = new Trip("ber", "muc", 20, LocalDateTime.now(),LocalDateTime.now());
 //        Trip trip3 = new Trip("bra", "bar", 300, LocalDateTime.now(),LocalDateTime.now());
 
@@ -81,11 +89,12 @@ public class Controller {
         deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Trip trip = tripListView.getSelectionModel().getSelectedItem();
+                Trip trip = tripTableView.getSelectionModel().getSelectedItem();
                 deleteTrip(trip);
             }
         });
         listContextMenu.getItems().addAll(deleteMenuItem);
+        tripTableView.setContextMenu(listContextMenu);
 
         tripListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trip>() {
             @Override
@@ -95,12 +104,12 @@ public class Controller {
                     startLocationField.setText(selTrip.getStartLocation());
                     endLocationField.setText(selTrip.getEndLocation());
                     distanceField.setText(Integer.toString(selTrip.getDistance()));
-                    tripBeginDatePicker.setValue(LocalDate.from(selTrip.getTripBegin()));
-                    tripEndDatePicker.setValue(LocalDate.from(selTrip.getTripEnd()));
-                    tripBeginHour.setText(Integer.toString(selTrip.getTripBegin().getHour()));
-                    tripBeginMinute.setText(Integer.toString(selTrip.getTripBegin().getMinute()));
-                    tripEndHour.setText(Integer.toString(selTrip.getTripEnd().getHour()));
-                    tripEndMinute.setText(Integer.toString(selTrip.getTripEnd().getMinute()));
+                    tripBeginDatePicker.setValue(LocalDate.from(selTrip.getTripBegin().getLocalDateTime()));
+                    tripEndDatePicker.setValue(LocalDate.from(selTrip.getTripEnd().getLocalDateTime()));
+                    tripBeginHour.setText(Integer.toString(selTrip.getTripBegin().getLocalDateTime().getHour()));
+                    tripBeginMinute.setText(Integer.toString(selTrip.getTripBegin().getLocalDateTime().getMinute()));
+                    tripEndHour.setText(Integer.toString(selTrip.getTripEnd().getLocalDateTime().getHour()));
+                    tripEndMinute.setText(Integer.toString(selTrip.getTripEnd().getLocalDateTime().getMinute()));
 
                 }
             }
@@ -109,7 +118,7 @@ public class Controller {
         tripSortedList = new SortedList<Trip>(TripData.getInstance().getTrips(), new Comparator<Trip>() {
             @Override
             public int compare(Trip o1, Trip o2) {
-                return o1.getTripEnd().compareTo(o2.getTripEnd());
+                return o1.getTripEnd().getLocalDateTime().compareTo(o2.getTripEnd().getLocalDateTime());
             }
         });
 
@@ -144,6 +153,9 @@ public class Controller {
                 return cell;
             }
         });
+        // here begins data bound TableView
+        tripTableView.setItems(tripSortedList);
+ 
     }
 
     // overloaded add method to cater for default addTrip() called in fxml

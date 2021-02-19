@@ -1,6 +1,7 @@
 package com.docschorsch.fahrtenbuch;
 
 import datamodel.TripData;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,9 +37,6 @@ public class Main extends Application {
             System.out.println(e.getMessage());
         }
     }
-
-
-
 
     public static void main(String[] args) {
         launch(args);
