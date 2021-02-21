@@ -27,8 +27,6 @@ import java.util.Optional;
 public class Controller {
 
 //    public static ArrayList<Trip> trips = new ArrayList<Trip>();
-    @FXML
-    private ListView<Trip> tripListView;
 
     @FXML
     private TableView<Trip> tripTableView;
@@ -58,9 +56,6 @@ public class Controller {
     @FXML
     private Button saveEdits;
 
-    @FXML
-    private TableColumn tripBeginColumn;
-
     private SortedList<Trip> tripSortedList;
 
 
@@ -84,6 +79,8 @@ public class Controller {
 
         saveEdits.setOnAction(event -> addTrip(2));
 
+
+        // Context menu delete on right-click
         listContextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem("Delete");
         deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -96,11 +93,12 @@ public class Controller {
         listContextMenu.getItems().addAll(deleteMenuItem);
         tripTableView.setContextMenu(listContextMenu);
 
-        tripListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trip>() {
+        // Update user entry fields upon selection of table entries
+        tripTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trip>() {
             @Override
             public void changed(ObservableValue<? extends Trip> observableValue, Trip trip, Trip t1) {
                 if(t1 != null) {
-                    Trip selTrip = tripListView.getSelectionModel().getSelectedItem();
+                    Trip selTrip = tripTableView.getSelectionModel().getSelectedItem();
                     startLocationField.setText(selTrip.getStartLocation());
                     endLocationField.setText(selTrip.getEndLocation());
                     distanceField.setText(Integer.toString(selTrip.getDistance()));
@@ -110,53 +108,22 @@ public class Controller {
                     tripBeginMinute.setText(Integer.toString(selTrip.getTripBegin().getLocalDateTime().getMinute()));
                     tripEndHour.setText(Integer.toString(selTrip.getTripEnd().getLocalDateTime().getHour()));
                     tripEndMinute.setText(Integer.toString(selTrip.getTripEnd().getLocalDateTime().getMinute()));
-
                 }
             }
         });
 
+        //Sort Table beginning with oldest trip ending
         tripSortedList = new SortedList<Trip>(TripData.getInstance().getTrips(), new Comparator<Trip>() {
             @Override
             public int compare(Trip o1, Trip o2) {
                 return o1.getTripEnd().getLocalDateTime().compareTo(o2.getTripEnd().getLocalDateTime());
             }
         });
-
-        tripListView.setItems(tripSortedList);
-        tripListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tripListView.getSelectionModel().selectFirst();
-
-        tripListView.setCellFactory(new Callback<ListView<Trip>, ListCell<Trip>>() {
-            @Override
-            public ListCell<Trip> call(ListView<Trip> tripListView) {
-                ListCell<Trip> cell = new ListCell<>() {
-                    @Override
-                    protected void updateItem(Trip trip, boolean empty) {
-                        super.updateItem(trip, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            setText(trip.toString());
-                        }
-                    }
-                };
-
-                cell.emptyProperty().addListener(
-                        (obs, wasEmpty, isNowEmpty) -> {
-                            if (isNowEmpty) {
-                                cell.setContextMenu(null);
-                            } else {
-                                cell.setContextMenu(listContextMenu);
-                            }
-
-                        });
-                return cell;
-            }
-        });
-        // here begins data bound TableView
         tripTableView.setItems(tripSortedList);
- 
-    }
+        tripTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tripTableView.getSelectionModel().selectFirst();
+
+     }
 
     // overloaded add method to cater for default addTrip() called in fxml
     public void addTrip() {
@@ -208,13 +175,13 @@ public class Controller {
             System.out.println("Error - trying to add empty or 0 field!");
             // edit if "save edit" was pressed
         } else if (addOrEdit == 2) {
-            Trip selectedTrip = tripListView.getSelectionModel().getSelectedItem();
+            Trip selectedTrip = tripTableView.getSelectionModel().getSelectedItem();
             TripData.getInstance().editTrip(selectedTrip, trip);
         } else {
             TripData.getInstance().addTrip(trip);
         }
-        tripListView.setItems(tripSortedList);
-        tripListView.getSelectionModel().select(trip);
+        tripTableView.setItems(tripSortedList);
+        tripTableView.getSelectionModel().select(trip);
     }
 
 
@@ -248,7 +215,7 @@ public class Controller {
 
     @FXML
     public void handleKeyPressed(KeyEvent keyEvent) {
-        Trip selectedTrip = tripListView.getSelectionModel().getSelectedItem();
+        Trip selectedTrip = tripTableView.getSelectionModel().getSelectedItem();
         if(selectedTrip != null) {
             if(keyEvent.getCode().equals(KeyCode.DELETE)) {
                 deleteTrip(selectedTrip);
