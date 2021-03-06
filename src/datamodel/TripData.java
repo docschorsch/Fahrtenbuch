@@ -56,11 +56,10 @@ public class TripData {
     public void loadTripData() throws IOException {
         trips = FXCollections.observableArrayList();
         Path path = Paths.get(filename);
-        BufferedReader br = Files.newBufferedReader(path);
 
         String input;
-        try {
-            while ((input=br.readLine()) != null) {
+        try(BufferedReader br = Files.newBufferedReader(path)) {
+            while ((input = br.readLine()) != null) {
                 String[] tripParameters = input.split("\t");
                 String startLocation = tripParameters[0];
                 String endLocation = tripParameters[1];
@@ -71,21 +70,16 @@ public class TripData {
                 LocalDateTime dateTimeTripBegin = LocalDateTime.parse(dateTimeStringTripBegin, DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
                 LocalDateTime dateTimeTripEnd = LocalDateTime.parse(dateTimeStringTripEnd, DateTimeFormatter.ofPattern("d MMM uuuu : HH mm"));
                 int distance = Integer.parseInt(distanceString);
-                Trip trip = new Trip(startLocation,endLocation,distance,dateTimeTripBegin,dateTimeTripEnd);
+                Trip trip = new Trip(startLocation, endLocation, distance, dateTimeTripBegin, dateTimeTripEnd);
                 trips.add(trip);
-            }
-        } finally {
-            if(br!=null) {
-                br.close();
             }
         }
     }
 
     public void storeTripData() throws IOException {
         Path path = Paths.get(filename);
-        BufferedWriter bw = Files.newBufferedWriter(path);
 
-        try {
+        try(BufferedWriter bw = Files.newBufferedWriter(path)) {
             Iterator<Trip> iterator = trips.iterator();
             while (iterator.hasNext()) {
                 Trip trip = iterator.next();
@@ -93,14 +87,10 @@ public class TripData {
                     trip.getDistance(),trip.getTripBegin().getLocalDateTime().format(formatter),trip.getTripEnd().getLocalDateTime().format(formatter)));
                 bw.newLine();
             }
-        } finally {
-            if(bw != null ) {
-                bw.close();
-            }
         }
     }
+
     public void deleteTripItem(Trip trip) {
         trips.remove(trip);
     }
-
 }

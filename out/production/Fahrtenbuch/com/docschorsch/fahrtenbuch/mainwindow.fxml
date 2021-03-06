@@ -19,7 +19,7 @@
             xmlns:fx="http://javafx.com/fxml" >
     <top>
         <MenuBar>
-            <Menu text="File">
+            <Menu text="Menu">
                 <items>
                     <MenuItem text="Exit" onAction="#handleExit"/>
                 </items>
@@ -98,7 +98,7 @@
                             <PropertyValueFactory property="distance"/>
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn fx:id="tripBeginColumn" text="Trip Begin DateNTime">
+                    <TableColumn text="Trip Begin DateNTime">
                         <cellValueFactory>
                             <PropertyValueFactory property="tripBegin" />
                         </cellValueFactory>
@@ -108,13 +108,8 @@
                             <PropertyValueFactory property="tripEnd"/>
                         </cellValueFactory>
                     </TableColumn>
-
-
                 </columns>
             </TableView>
-
-            <ListView fx:id="tripListView" GridPane.columnIndex="0" GridPane.rowIndex="3" onKeyPressed="#handleKeyPressed" >
-            </ListView>
         </VBox>
 
     </center>

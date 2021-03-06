@@ -64,21 +64,7 @@ public class Controller {
 
     public void initialize() {
 
-//        Trip trip = new Trip("muc", "ber", 600, LocalDateTime.now(),LocalDateTime.now());
-//        System.out.println(trip.getTripBeginTest());
-//        Trip trip2 = new Trip("ber", "muc", 20, LocalDateTime.now(),LocalDateTime.now());
-//        Trip trip3 = new Trip("bra", "bar", 300, LocalDateTime.now(),LocalDateTime.now());
-
-//        ArrayList<Trip> trips = new ArrayList<>();
-//        TripData.getInstance().addTrip(trip);
-//        TripData.getInstance().addTrip(trip2);
-//        TripData.getInstance().addTrip(trip3);
-
-//        trips.add(trip2);
-//        trips.add(trip3);
-
         saveEdits.setOnAction(event -> addTrip(2));
-
 
         // Context menu delete on right-click
         listContextMenu = new ContextMenu();
@@ -119,9 +105,9 @@ public class Controller {
                 return o1.getTripEnd().getLocalDateTime().compareTo(o2.getTripEnd().getLocalDateTime());
             }
         });
+//        tripSortedList.comparatorProperty().bind(tripTableView.comparatorProperty());
         tripTableView.setItems(tripSortedList);
         tripTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tripTableView.getSelectionModel().selectFirst();
 
      }
 
